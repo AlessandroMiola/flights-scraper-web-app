@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "flights-scraper-web-app"
+version = "0.1.0"
+description = "Flights Scraper Web App"
+authors = ["Alessandro Miola <alessandro1.miola@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.103.0"
+jinja2 = "^3.1.2"
+uvicorn = "^0.23.2"
+sqlalchemy = "^2.0.20"
+
+[tool.poetry.group.dev.dependencies]
+bandit = "^1.7.5"
+
