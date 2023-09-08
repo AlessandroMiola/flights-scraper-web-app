@@ -38,49 +38,54 @@
                 </div>
             </div>
 
-            <input name="submit_button_ow" type="submit" class="btn btn-outline-success"></input>
-        </form>
-
-
-        <form class="hidden" method="post" name="comeback" action="">
             <div class="row mt-5 mb-3">
                 <div>
-                    <input type="text" placeholder="from" name="departure_location_comeback">
-                    <input type="text" placeholder="to" name="arrival_location_comeback">
+                    <input class="hidden" type="text" placeholder="from" name="departure_location_comeback">
+                    <input class="hidden" type="text" placeholder="to" name="arrival_location_comeback">
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
                 <div>
-                    <input type="date" name="departure_date_comeback"/>
-                    <input type="time" name="departure_time_comeback"/>
+                    <input class="hidden" type="date" name="departure_date_comeback"/>
+                    <input class="hidden" type="time" name="departure_time_comeback"/>
                 </div>
             </div>
 
-            <input name="submit_button_tw" type="submit" class="btn btn-outline-success"></input>
+            <input name="submit_button" type="submit" class="btn btn-outline-success"></input>
         </form>
 
         <script>
-            const form1 = document.querySelector("input[name='submit_button_ow']");
-            const form2 = document.querySelector("form[name='comeback']");
+            const form1 = document.querySelector("input[name='departure_location_comeback']");
+            const form2 = document.querySelector("input[name='arrival_location_comeback']");
+            const form3 = document.querySelector("input[name='departure_date_comeback']");
+            const form4 = document.querySelector("input[name='departure_time_comeback']");
             
             document.querySelector('#round-trip').addEventListener('change',(event)=>{
                 if (event.target.checked){
-                    form1.classList.add("hidden");
-                    form2.classList.remove("hidden");
-                } else {
                     form1.classList.remove("hidden");
+                    form2.classList.remove("hidden");
+                    form3.classList.remove("hidden");
+                    form4.classList.remove("hidden");
+                } else {
+                    form1.classList.add("hidden");
                     form2.classList.add("hidden");
+                    form3.classList.add("hidden");
+                    form4.classList.add("hidden");
                 }
             });
 
             document.querySelector('#oneway-trip').addEventListener('change',(event)=>{
                 if (event.target.checked){
-                    form1.classList.remove("hidden");
-                    form2.classList.add("hidden");
-                } else {
                     form1.classList.add("hidden");
+                    form2.classList.add("hidden");
+                    form3.classList.add("hidden");
+                    form4.classList.add("hidden");
+                } else {
+                    form1.classList.remove("hidden");
                     form2.classList.remove("hidden");
+                    form3.classList.remove("hidden");
+                    form4.classList.remove("hidden");
                 }
             });
         </script>
