@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    <title>Flight Details</title>
+{% endblock %}
+
+{% block head_css %}
+    <link rel="stylesheet" href="{{url_for('static', path='/style.css')}}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="display-4">Flights Scraper ✈︎</h1>
+
+        <form method="post" action="">
+            <div class="row mt-5 mb-3">
+                <div>
+                    <input type="radio" id="oneway-trip" name="trip_type" placeholder="One-way trip" checked/>
+                    <label>One-way trip</label>
+                    <br>
+                    <input type="radio" id="round-trip" name="trip_type" placeholder="Round trip"/>
+                    <label>Round trip</label>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>    
+                    <input type="text" placeholder="from" name="departure_location">
+                    <input type="text" placeholder="to" name="arrival_location">
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>  
+                    <input type="date" name="departure_date"/>
+                    <input type="time" name="departure_time"/>
+                </div>
+            </div>
+
+            <input name="submit_button_ow" type="submit" class="btn btn-outline-success"></input>
+        </form>
+
+
+        <form class="hidden" method="post" name="comeback" action="">
+            <div class="row mt-5 mb-3">
+                <div>
+                    <input type="text" placeholder="from" name="departure_location_comeback">
+                    <input type="text" placeholder="to" name="arrival_location_comeback">
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>
+                    <input type="date" name="departure_date_comeback"/>
+                    <input type="time" name="departure_time_comeback"/>
+                </div>
+            </div>
+
+            <input name="submit_button_tw" type="submit" class="btn btn-outline-success"></input>
+        </form>
+
+        <script>
+            const form1 = document.querySelector("input[name='submit_button_ow']");
+            const form2 = document.querySelector("form[name='comeback']");
+            
+            document.querySelector('#round-trip').addEventListener('change',(event)=>{
+                if (event.target.checked){
+                    form1.classList.add("hidden");
+                    form2.classList.remove("hidden");
+                } else {
+                    form1.classList.remove("hidden");
+                    form2.classList.add("hidden");
+                }
+            });
+
+            document.querySelector('#oneway-trip').addEventListener('change',(event)=>{
+                if (event.target.checked){
+                    form1.classList.remove("hidden");
+                    form2.classList.add("hidden");
+                } else {
+                    form1.classList.add("hidden");
+                    form2.classList.remove("hidden");
+                }
+            });
+        </script>
+
+        {% block scripts %}
+            <!--script src="{{url_for('static', path='/calendar_script.js')}}"></script-->
+        {% endblock %}
+
+    </div>
+    
+{% endblock %}

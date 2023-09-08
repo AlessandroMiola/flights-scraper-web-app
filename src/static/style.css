@@ -1,0 +1,35 @@
+body {
+    font-family: "Rubik", sans-serif;
+    /* background-color: #ff7f50; */
+}
+
+input[type="radio"] {
+    -webkit-box-align: none;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+input[type="radio"]:hover {
+    box-shadow:0 0 5px 0px orange inset;
+}
+
+input[type="radio"]:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+input[type="radio"]:checked:before {
+    background: orangered;
+}
+
+label {
+    vertical-align: middle;
+}
+
+.hidden {
+    display: none;
+}

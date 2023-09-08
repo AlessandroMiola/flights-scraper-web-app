@@ -8,7 +8,7 @@ load_dotenv(env_path)
 
 
 class Settings:
-    PROJECT_TITLE: str = "Flight Scraper Web App ✈︎"
+    PROJECT_TITLE: str = "Flights Scraper Web App ✈︎"
     PROJECT_VERSION: str = "0.1.0"
 
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
