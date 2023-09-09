@@ -16,10 +16,10 @@
         <form method="post" action="">
             <div class="row mt-5 mb-3">
                 <div>
-                    <input type="radio" id="oneway-trip" name="trip_type" placeholder="One-way trip" checked/>
+                    <input type="radio" id="oneway-trip" name="is_round_trip" placeholder="One-way trip" value="{{false}}" checked/>
                     <label>One-way trip</label>
                     <br>
-                    <input type="radio" id="round-trip" name="trip_type" placeholder="Round trip"/>
+                    <input type="radio" id="round-trip" name="is_round_trip" placeholder="Round trip" value="{{true}}"/>
                     <label>Round trip</label>
                 </div>
             </div>
@@ -34,7 +34,6 @@
             <div class="row mt-3 mb-3">
                 <div>  
                     <input type="date" name="departure_date"/>
-                    <input type="time" name="departure_time"/>
                 </div>
             </div>
 
@@ -48,7 +47,6 @@
             <div class="row mt-3 mb-3">
                 <div>
                     <input class="hidden" type="date" name="departure_date_comeback"/>
-                    <input class="hidden" type="time" name="departure_time_comeback"/>
                 </div>
             </div>
 

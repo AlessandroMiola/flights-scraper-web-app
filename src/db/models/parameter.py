@@ -1,6 +1,6 @@
 from ..base import Base, TableNameMixin
-from datetime import datetime
-from sqlalchemy import Boolean, DateTime, String
+from datetime import date
+from sqlalchemy import Boolean, Date, String
 from sqlalchemy.orm import Mapped, mapped_column
 from typing import Optional
 
@@ -17,8 +17,8 @@ class Parameter(Base, TableNameMixin):
         String,
         nullable=True,
     )
-    departure_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-    departure_date_comeback: Mapped[Optional[datetime]] = mapped_column(
-        DateTime,
+    departure_date: Mapped[date] = mapped_column(Date, nullable=False)
+    departure_date_comeback: Mapped[Optional[date]] = mapped_column(
+        Date,
         nullable=True,
     )
