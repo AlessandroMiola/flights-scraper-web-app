@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from .apis.api import api_router
-from .apps.api import app_router
-from .core.config import settings
+
+from src.apis.api import api_router
+from src.apps.api import app_router
+from src.core.config import settings
 
 
 def include_router(app):

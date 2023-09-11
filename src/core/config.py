@@ -1,10 +1,10 @@
 import os
-from dotenv import load_dotenv
-from pathlib import Path
+
+from environs import Env
 
 
-env_path = Path(".") / ".env"
-load_dotenv(env_path)
+env = Env()
+env.read_env()
 
 
 class Settings:
@@ -16,8 +16,7 @@ class Settings:
     POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
     POSTGRES_PORT: int = os.getenv("POSTGRES_PORT", 5432)
     POSTGRES_DB: str = os.getenv("POSTGRES_DB")
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD} \
-        @{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 
 settings = Settings()

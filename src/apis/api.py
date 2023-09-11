@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from .v1 import flights
+
+from src.apis.v1 import flights
 
 
 api_router = APIRouter()

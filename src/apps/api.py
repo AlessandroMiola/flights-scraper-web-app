@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from .v1 import render_templates
+
+from src.apps.v1 import endpoints
 
 
 app_router = APIRouter()
-app_router.include_router(render_templates.router, include_in_schema=False)
+app_router.include_router(endpoints.router, include_in_schema=False)
