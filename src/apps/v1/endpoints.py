@@ -27,7 +27,7 @@ def home(request: Request):
 @router.post("/")
 def update_params_and_call_scraper(
     request: Request,
-    is_round_trip: bool = Form(...),
+    is_two_way_trip: bool = Form(...),
     departure_location: str = Form(...),
     arrival_location: str = Form(...),
     departure_date: date = Form(...),
@@ -39,7 +39,7 @@ def update_params_and_call_scraper(
     exceptions = []
     try:
         flight = FlightCreate(
-            is_round_trip=is_round_trip,
+            is_two_way_trip=is_two_way_trip,
             departure_location=departure_location,
             arrival_location=arrival_location,
             departure_date=departure_date,

@@ -22,11 +22,11 @@
         <form method="post" action="">
             <div class="row mt-5 mb-3">
                 <div>
-                    <input type="radio" id="oneway-trip" name="is_round_trip" placeholder="One-way trip" value="{{false}}" checked/>
+                    <input type="radio" id="oneway-trip" name="is_two_way_trip" placeholder="One-way trip" value="{{false}}" checked/>
                     <label>One-way trip</label>
                     <br>
-                    <input type="radio" id="round-trip" name="is_round_trip" placeholder="Round trip" value="{{true}}"/>
-                    <label>Round trip</label>
+                    <input type="radio" id="twoway-trip" name="is_two_way_trip" placeholder="Two-way trip" value="{{true}}"/>
+                    <label>Two-way trip</label>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
             const form2 = document.querySelector("input[name='arrival_location_comeback']");
             const form3 = document.querySelector("input[name='departure_date_comeback']");
             
-            document.querySelector('#round-trip').addEventListener('change', (event) => {
+            document.querySelector('#twoway-trip').addEventListener('change', (event) => {
                 if (event.target.checked){
                     form1.classList.remove("hidden");
                     form2.classList.remove("hidden");

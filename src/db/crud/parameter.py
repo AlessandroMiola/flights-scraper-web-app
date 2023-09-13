@@ -6,7 +6,7 @@ from src.entities.flight import FlightCreate
 
 def create_params(flight: FlightCreate, db: Session):
     params = Parameter(
-        is_round_trip=flight.is_round_trip,
+        is_two_way_trip=flight.is_two_way_trip,
         departure_location=flight.departure_location,
         arrival_location=flight.arrival_location,
         departure_location_comeback=flight.departure_location_comeback,

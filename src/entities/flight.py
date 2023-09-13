@@ -5,7 +5,7 @@ from pydantic import BaseModel, model_validator
 
 
 class FlightBase(BaseModel):
-    is_round_trip: bool
+    is_two_way_trip: bool
     departure_location: str
     arrival_location: str
     departure_location_comeback: Optional[str] = None
@@ -19,8 +19,8 @@ class FlightCreate(FlightBase):
 
     @model_validator(mode="before")
     @classmethod
-    def validate_round_trip_attributes(cls, v: dict[str, Any]):
-        if v["is_round_trip"]:
+    def validate_two_way_trip_attributes(cls, v: dict[str, Any]):
+        if v["is_two_way_trip"]:
             assert v["departure_location_comeback"] is not None
             assert v["arrival_location_comeback"] is not None
             assert v["departure_date_comeback"] is not None
