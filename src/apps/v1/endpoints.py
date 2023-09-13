@@ -1,8 +1,10 @@
+import json
 from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Form, Request, responses, status
 from fastapi.templating import Jinja2Templates
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from src.db.crud.parameter import create_params
@@ -34,18 +36,31 @@ def update_params_and_call_scraper(
     departure_date_comeback: date = Form(None),
     db: Session = Depends(get_db)
 ):
-    flight = FlightCreate(
-        is_round_trip=is_round_trip,
-        departure_location=departure_location,
-        arrival_location=arrival_location,
-        departure_date=departure_date,
-        departure_location_comeback=departure_location_comeback,
-        arrival_location_comeback=arrival_location_comeback,
-        departure_date_comeback=departure_date_comeback
-    )
-    params = create_params(flight=flight, db=db)
-    scraped_data = "default"
-    return responses.RedirectResponse(
-        url="/",
-        status_code=status.HTTP_302_FOUND
-    )
+    exceptions = []
+    try:
+        flight = FlightCreate(
+            is_round_trip=is_round_trip,
+            departure_location=departure_location,
+            arrival_location=arrival_location,
+            departure_date=departure_date,
+            departure_location_comeback=departure_location_comeback,
+            arrival_location_comeback=arrival_location_comeback,
+            departure_date_comeback=departure_date_comeback
+        )
+        params = create_params(flight=flight, db=db)
+        scraped_data = "default"
+        return responses.RedirectResponse(
+            url="/",
+            status_code=status.HTTP_302_FOUND
+        )
+    except ValidationError as e:
+        exceptions_list = json.loads(e.json())
+        for item in exceptions_list:
+            exceptions.append(item.get("loc")[-1] + ": " + item.get("msg"))
+        return templates.TemplateResponse(
+            name="/",
+            context={
+                "request": request,
+                "exceptions": exceptions
+            }
+        )

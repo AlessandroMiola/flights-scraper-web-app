@@ -10,6 +10,12 @@
 
 {% block content %}
 
+    {% for exception in exceptions %}
+    <div class="alert alert-danger">
+        <li>{{exception}}</li>
+    </div>
+    {% endfor %}
+
     <div class="container">
         <h1 class="display-4">Flights Scraper ✈︎</h1>
 
