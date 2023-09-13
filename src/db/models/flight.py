@@ -1,13 +1,15 @@
-from ..base import Base, TableNameMixin
 from datetime import datetime
+from typing import Optional
+
 from sqlalchemy import Boolean, DateTime, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
-from typing import Optional
+
+from src.db.base_class import Base, TableNameMixin
 
 
 class Flight(Base, TableNameMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    is_round_trip: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_two_way_trip: Mapped[bool] = mapped_column(Boolean, nullable=False)
     departure_location: Mapped[str] = mapped_column(String, nullable=False)
     arrival_location: Mapped[str] = mapped_column(String, nullable=False)
     departure_location_comeback: Mapped[Optional[str]] = mapped_column(

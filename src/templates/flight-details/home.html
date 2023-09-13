@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    <title>Flight Details</title>
+{% endblock %}
+
+{% block head_css %}
+    <link rel="stylesheet" href="{{url_for('static', path='/style.css')}}">
+{% endblock %}
+
+{% block content %}
+
+    {% for exception in exceptions %}
+    <div class="alert alert-danger">
+        <li>{{exception}}</li>
+    </div>
+    {% endfor %}
+
+    <div class="container">
+        <h1 class="display-4">Flights Scraper ✈︎</h1>
+
+        <form method="post" action="">
+            <div class="row mt-5 mb-3">
+                <div>
+                    <input type="radio" id="oneway-trip" name="is_two_way_trip" placeholder="One-way trip" value="{{false}}" checked/>
+                    <label>One-way trip</label>
+                    <br>
+                    <input type="radio" id="twoway-trip" name="is_two_way_trip" placeholder="Two-way trip" value="{{true}}"/>
+                    <label>Two-way trip</label>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>    
+                    <input required type="text" placeholder="from" name="departure_location">
+                    <input required type="text" placeholder="to" name="arrival_location">
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>  
+                    <input required class="date-inputs" type="date" name="departure_date" id="dep-date"/>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-3">
+                <div>
+                    <input class="hidden" type="text" placeholder="from" name="departure_location_comeback">
+                    <input class="hidden" type="text" placeholder="to" name="arrival_location_comeback">
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div>
+                    <input class="hidden date-inputs" type="date" name="departure_date_comeback" id="dep-date-cb"/>
+                </div>
+            </div>
+
+            <input name="submit_button" type="submit" class="btn btn-outline-success"></input>
+        </form>
+
+        <script>
+            const form1 = document.querySelector("input[name='departure_location_comeback']");
+            const form2 = document.querySelector("input[name='arrival_location_comeback']");
+            const form3 = document.querySelector("input[name='departure_date_comeback']");
+            
+            document.querySelector('#twoway-trip').addEventListener('change', (event) => {
+                if (event.target.checked){
+                    form1.classList.remove("hidden");
+                    form2.classList.remove("hidden");
+                    form3.classList.remove("hidden");
+                    form1.setAttribute("required", "");
+                    form2.setAttribute("required", "");
+                    form3.setAttribute("required", "");
+                } else {
+                    form1.classList.add("hidden");
+                    form2.classList.add("hidden");
+                    form3.classList.add("hidden");
+                    form1.removeAttribute("required");
+                    form2.removeAttribute("required");
+                    form3.removeAttribute("required");
+                }
+            });
+
+            document.querySelector('#oneway-trip').addEventListener('change', (event) => {
+                if (event.target.checked){
+                    form1.classList.add("hidden");
+                    form2.classList.add("hidden");
+                    form3.classList.add("hidden");
+                    form1.removeAttribute("required");
+                    form2.removeAttribute("required");
+                    form3.removeAttribute("required");
+                } else {
+                    form1.classList.remove("hidden");
+                    form2.classList.remove("hidden");
+                    form3.classList.remove("hidden");
+                    form1.setAttribute("required", "");
+                    form2.setAttribute("required", "");
+                    form3.setAttribute("required", "");
+                }
+            });
+        </script>
+        <script>
+            const dep_date_form = document.querySelector("#dep-date");
+            const dep_date_cb_form = document.querySelector("#dep-date-cb");
+            let depDate;
+
+            dep_date_form.addEventListener("change", (event) => {
+                depDate = new Date(event.target.value);
+                const today = new Date();
+                if (depDate < today) {
+                    event.target.setCustomValidity("Can't leave in the past :(");
+                } else {
+                event.target.setCustomValidity("");
+                }
+            });
+
+            dep_date_cb_form.addEventListener("change", (event) => {
+                const depDateCb = new Date(event.target.value);
+                if (depDateCb < depDate) {
+                    event.target.setCustomValidity("Can't come back before leaving.");
+                } else {
+                event.target.setCustomValidity("");
+                }
+            });
+            </script>
+
+        {% block scripts %}
+            <!--script src="{{url_for('static', path='/calendar_script.js')}}"></script-->
+        {% endblock %}
+
+    </div>
+    
+{% endblock %}

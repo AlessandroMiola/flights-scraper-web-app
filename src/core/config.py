@@ -1,14 +1,14 @@
 import os
-from dotenv import load_dotenv
-from pathlib import Path
+
+from environs import Env
 
 
-env_path = Path(".") / ".env"
-load_dotenv(env_path)
+env = Env()
+env.read_env()
 
 
 class Settings:
-    PROJECT_TITLE: str = "Flight Scraper Web App ✈︎"
+    PROJECT_TITLE: str = "Flights Scraper Web App ✈︎"
     PROJECT_VERSION: str = "0.1.0"
 
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
@@ -16,8 +16,7 @@ class Settings:
     POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
     POSTGRES_PORT: int = os.getenv("POSTGRES_PORT", 5432)
     POSTGRES_DB: str = os.getenv("POSTGRES_DB")
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD} \
-        @{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 
 settings = Settings()
