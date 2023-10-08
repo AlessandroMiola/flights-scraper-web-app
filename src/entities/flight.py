@@ -38,8 +38,16 @@ class FlightCreate(FlightBase):
 class FlightShow(FlightBase):
     arrival_date: datetime
     arrival_date_comeback: Optional[datetime] = None
+    airline: str
+    airline_comeback: Optional[str] = None
+    flight_length: str
+    flight_length_comeback: Optional[str] = None
+    trip_type: str
+    trip_type_comeback: Optional[str] = None
     price: float
+    currency: str
     luggage_type: str
+    luggage_type_comeback: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
