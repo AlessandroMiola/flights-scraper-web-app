@@ -182,6 +182,16 @@ class EdreamsScraper:
             )
         self._click_submit_button()
 
+    def _click_load_additional_cards_button(self):
+        try:
+            load_add_elements_button = self._driver.find_element(
+                By.XPATH, self._xpath_load_further_results
+            )
+        except NoSuchElementException:
+            pass
+        else:
+            load_add_elements_button.click()
+
     def _scroll_to_load_all_flight_cards(self):
         prev_page_height = self._driver.execute_script(
             "return document.body.scrollHeight"
@@ -193,7 +203,12 @@ class EdreamsScraper:
                 "return document.body.scrollHeight"
             )
             if curr_page_height == prev_page_height:
-                break
+                self._click_load_additional_cards_button()
+                curr_page_height = self._driver.execute_script(
+                    "return document.body.scrollHeight"
+                )
+                if curr_page_height == prev_page_height:
+                    break
             prev_page_height = curr_page_height
 
     def _determine_arrival_date(
