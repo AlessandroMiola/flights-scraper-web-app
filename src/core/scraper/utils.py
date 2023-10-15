@@ -36,7 +36,7 @@ def scrape_data(
         departure_date_comeback
     )
     system_time.sleep(3)
-    data = scraper.scrape_flight_cards(
+    data = scraper.scrape_flight_data(
         is_two_way_trip,
         departure_date,
         departure_date_comeback
