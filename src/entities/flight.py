@@ -30,7 +30,7 @@ class FlightCreate(FlightBase):
     @classmethod
     def validate_input_dates(cls, v: dict[str, Any]):
         assert v["departure_date"] >= date.today()
-        if v["departure_date_comeback"] is not None:
+        if "departure_date_comeback" in v and v["departure_date_comeback"] is not None:
             assert v["departure_date"] < v["departure_date_comeback"]
         return v
 
@@ -53,6 +53,6 @@ class FlightShow(FlightBase):
     @classmethod
     def validate_arrival_dates(cls, v: dict[str, Any]):
         assert v["departure_date"] < v["arrival_date"]
-        if v["departure_date_comeback"] is not None:
+        if "departure_date_comeback" in v and v["departure_date_comeback"] is not None:
             assert v["departure_date_comeback"] < v["arrival_date_comeback"]
         return v

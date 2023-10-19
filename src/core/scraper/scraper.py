@@ -63,6 +63,7 @@ class EdreamsScraper:
         self._xpath_checked_luggage = ".//div[contains(@class, 'css-gkdpl-BaseText-Body')]"
         self._xpath_prices = ".//span[contains(@class, 'money-integer')]"
         self._xpath_currencies = ".//span[contains(@class, 'money-currency')]"
+        self._xpath_load_further_results = "//button[@class='e6ygnnq0 css-1ynvpxn-StyledBaseCallToAction-StyledButton e3hopz80']"
 
     def _construct_day_xpath(self):
         return f"//div[contains(@class, 'odf-calendar-row')]//div[contains(@class, 'odf-calendar-day') and text()='{self._day_to_select}']"
@@ -406,6 +407,7 @@ class EdreamsScraper:
         flight_data_list = []
         for card in flight_cards:
             flight_data = dict()
+            flight_data["is_two_way_trip"] = is_two_way_trip
             flight_data.update(self._extract_single_trip_details(
                 card, departure_date, is_outbound=True)
             )
@@ -418,3 +420,32 @@ class EdreamsScraper:
 
     def close(self):
         self._driver.quit()
+
+
+def scrape_data(
+    is_two_way_trip: bool,
+    departure_location: str,
+    arrival_location: str,
+    departure_date: date,
+    departure_location_comeback: Optional[str] = None,
+    arrival_location_comeback: Optional[str] = None,
+    departure_date_comeback: Optional[date] = None
+):
+    scraper = EdreamsScraper()
+    scraper.search_flights(
+        is_two_way_trip,
+        departure_location,
+        arrival_location,
+        departure_date,
+        departure_location_comeback,
+        arrival_location_comeback,
+        departure_date_comeback
+    )
+    system_time.sleep(3)
+    data = scraper.scrape_flight_data(
+        is_two_way_trip,
+        departure_date,
+        departure_date_comeback
+    )
+    scraper.close()
+    return data
