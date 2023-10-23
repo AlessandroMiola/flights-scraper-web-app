@@ -49,7 +49,7 @@ def update_params_and_call_scraper(
             arrival_location_comeback=arrival_location_comeback,
             departure_date_comeback=departure_date_comeback
         )
-        _ = create_params(flight=flight, db=db)
+        parameters = create_params(flight=flight, db=db)
         scraped_flight_data = scrape_data(
             is_two_way_trip=flight.is_two_way_trip,
             departure_location=flight.departure_location,
@@ -60,8 +60,10 @@ def update_params_and_call_scraper(
             departure_date_comeback=flight.departure_date_comeback
         )
         for data in scraped_flight_data:
-            flight_data = FlightShow(**data)
-            _ = post_flight_data(flight_data=flight_data, db=db)
+            flight_data_out = FlightShow(**data)
+            _ = post_flight_data(
+                    params=parameters, flight_data=flight_data_out, db=db
+                )
         return responses.RedirectResponse(
             url="/",
             status_code=status.HTTP_302_FOUND
