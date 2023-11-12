@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
 from datetime import date, datetime
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, model_validator
 
 
 class FlightBase(BaseModel):
@@ -36,7 +36,6 @@ class FlightCreate(FlightBase):
 
 
 class FlightShow(FlightBase):
-    # model_config = ConfigDict(from_attributes=True)
 
     arrival_date: datetime
     arrival_date_comeback: Optional[datetime] = None
