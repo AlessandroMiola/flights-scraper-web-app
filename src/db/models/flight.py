@@ -13,7 +13,12 @@ class Flight(Base, TableNameMixin):
         ForeignKey("parameters.id", ondelete="CASCADE"),
         nullable=False
     )
-    parameters = relationship("Parameter", foreign_keys=[parameters_id])
+    parameters = relationship(
+        "Parameter",
+        foreign_keys=[parameters_id],
+        back_populates="flights",
+        cascade="all",
+    )
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     is_two_way_trip: Mapped[bool] = mapped_column(Boolean, nullable=False)
     departure_location: Mapped[str] = mapped_column(String, nullable=False)

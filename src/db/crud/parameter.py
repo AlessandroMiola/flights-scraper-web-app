@@ -10,3 +10,12 @@ def create_params(flight: FlightCreate, db: Session):
     db.commit()
     db.refresh(params)
     return params
+
+
+def delete_params_by_id(id: int, db: Session):
+    param_in_db = db.query(Parameter).filter(Parameter.id == id)
+    if not param_in_db.first():
+        return {"error": f"Could not find parameters with id {id}."}
+    param_in_db.delete()
+    db.commit()
+    return {"msg": f"Deleted parameters with id {id}."}
