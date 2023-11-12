@@ -2,14 +2,21 @@ import json
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Form, Request, responses, status
+from fastapi import (
+    APIRouter, Depends, Form, HTTPException, Request, responses, status
+)
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from src.core.scraper.scraper import scrape_data
-from src.db.crud.flight import post_flight_data
-from src.db.crud.parameter import create_params
+from src.db.crud.flight import (
+    delete_flight_data_by_id,
+    get_all_flights_data,
+    get_flight_data_by_id,
+    post_flight_data
+)
+from src.db.crud.parameter import create_params, delete_params_by_id
 from src.db.session import get_db
 from src.entities.flight import FlightCreate, FlightShow
 
@@ -79,3 +86,45 @@ def update_params_and_call_scraper(
                 "exceptions": exceptions
             }
         )
+
+
+@router.get(
+    "/all-flights",
+    response_model=dict[int, list[FlightShow]],
+    status_code=status.HTTP_200_OK
+)
+def get_all_flights_details(db: Session = Depends(get_db)):
+    all_flights_data = get_all_flights_data(db=db)
+    if not all_flights_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No flight data available."
+        )
+    return all_flights_data
+
+
+@router.get(
+    "/flight/{id}",
+    response_model=list[FlightShow],
+    status_code=status.HTTP_200_OK
+)
+def get_flight_details(id: int, db: Session = Depends(get_db)):
+    flight_data = get_flight_data_by_id(id=id, db=db)
+    if not flight_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No flight data available for id {id}."
+        )
+    return flight_data
+
+
+@router.delete("/cleanup/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_flight_details(id: int, db: Session = Depends(get_db)):
+    msg = delete_flight_data_by_id(id=id, db=db)
+    if msg.get("error"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=msg.get("error")
+        )
+    _ = delete_params_by_id(id=id, db=db)
+    return {"msg": msg.get("msg")}
