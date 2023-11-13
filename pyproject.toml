@@ -16,6 +16,7 @@ python-multipart = "^0.0.6"
 psycopg2 = "^2.9.7"
 environs = "^9.5.0"
 selenium = "^4.13.0"
+dash = "^2.14.1"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.5"

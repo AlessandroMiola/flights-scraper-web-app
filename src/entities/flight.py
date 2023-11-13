@@ -36,7 +36,6 @@ class FlightCreate(FlightBase):
 
 
 class FlightShow(FlightBase):
-
     arrival_date: datetime
     arrival_date_comeback: Optional[datetime] = None
     airline: str
