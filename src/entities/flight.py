@@ -20,18 +20,29 @@ class FlightCreate(FlightBase):
     @model_validator(mode="before")
     @classmethod
     def validate_two_way_trip_attributes(cls, v: Any):
-        if v.is_two_way_trip:
-            assert v.departure_location_comeback is not None
-            assert v.arrival_location_comeback is not None
-            assert v.departure_date_comeback is not None
+        if isinstance(v, dict):
+            if v["is_two_way_trip"]:
+                assert v["departure_location_comeback"] is not None
+                assert v["arrival_location_comeback"] is not None
+                assert v["departure_date_comeback"] is not None
+        else:
+            if v.is_two_way_trip:
+                assert v.departure_location_comeback is not None
+                assert v.arrival_location_comeback is not None
+                assert v.departure_date_comeback is not None
         return v
 
     @model_validator(mode="before")
     @classmethod
     def validate_input_dates(cls, v: Any):
-        assert v.departure_date >= date.today()
-        if v.departure_date_comeback is not None:
-            assert v.departure_date < v.departure_date_comeback
+        if isinstance(v, dict):
+            assert v["departure_date"] >= date.today()
+            if "departure_date_comeback" in v and v["departure_date_comeback"] is not None:
+                assert v["departure_date"] < v["departure_date_comeback"]
+        else:
+            assert v.departure_date >= date.today()
+            if v.departure_date_comeback is not None:
+                assert v.departure_date < v.departure_date_comeback
         return v
 
 
@@ -52,7 +63,12 @@ class FlightShow(FlightBase):
     @model_validator(mode="before")
     @classmethod
     def validate_arrival_dates(cls, v: Any):
-        assert v.departure_date < v.arrival_date
-        if v.departure_date_comeback is not None:
-            assert v.departure_date_comeback < v.arrival_date_comeback
+        if isinstance(v, dict):
+            assert v["departure_date"] < v["arrival_date"]
+            if "departure_date_comeback" in v and v["departure_date_comeback"] is not None:
+                assert v["departure_date_comeback"] < v["arrival_date_comeback"]
+        else:
+            assert v.departure_date < v.arrival_date
+            if v.departure_date_comeback is not None:
+                assert v.departure_date_comeback < v.arrival_date_comeback
         return v
