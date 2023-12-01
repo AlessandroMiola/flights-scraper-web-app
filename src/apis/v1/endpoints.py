@@ -6,7 +6,7 @@ from fastapi import (
     APIRouter, Depends, Form, HTTPException, Request, responses, status
 )
 from fastapi.templating import Jinja2Templates
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from sqlalchemy.orm import Session
 
 from src.core.scraper.scraper import scrape_data
@@ -14,9 +14,14 @@ from src.db.crud.flight import (
     delete_flight_data_by_id,
     get_all_flights_data,
     get_flight_data_by_id,
-    post_flight_data
+    post_flight_data,
+    update_flight_data_by_id
 )
-from src.db.crud.parameter import create_params, delete_params_by_id
+from src.db.crud.parameter import (
+    create_params,
+    get_params_by_id,
+    delete_params_by_id
+)
 from src.db.session import get_db
 from src.entities.flight import FlightCreate, FlightShow
 
@@ -116,6 +121,33 @@ def get_flight_details(id: int, db: Session = Depends(get_db)):
             detail=f"No flight data available for id {id}."
         )
     return flight_data
+
+
+@router.put("/flight/{id}", response_model=list[FlightShow])
+def update_flight_details(id: int, db: Session = Depends(get_db)):
+    existing_flight_params = get_params_by_id(id=id, db=db).first()
+    scraped_flight_data = scrape_data(
+        is_two_way_trip=existing_flight_params.is_two_way_trip,
+        departure_location=existing_flight_params.departure_location,
+        arrival_location=existing_flight_params.arrival_location,
+        departure_date=existing_flight_params.departure_date,
+        departure_location_comeback=existing_flight_params.departure_location_comeback,
+        arrival_location_comeback=existing_flight_params.arrival_location_comeback,
+        departure_date_comeback=existing_flight_params.departure_date_comeback
+    )
+    updated_flight_data = TypeAdapter(list[FlightShow]).validate_python(
+        scraped_flight_data
+    )
+    if not updated_flight_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No flight data available and updatable for id {id}."
+        )
+    return update_flight_data_by_id(
+        id=id,
+        new_flight_data=updated_flight_data,
+        db=db
+    )
 
 
 @router.delete("/cleanup/{id}", status_code=status.HTTP_204_NO_CONTENT)

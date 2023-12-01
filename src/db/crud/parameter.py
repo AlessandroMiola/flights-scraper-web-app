@@ -12,6 +12,10 @@ def create_params(flight: FlightCreate, db: Session):
     return params
 
 
+def get_params_by_id(id: int, db: Session):
+    return db.query(Parameter).filter(Parameter.id == id)
+
+
 def delete_params_by_id(id: int, db: Session):
     param_in_db = db.query(Parameter).filter(Parameter.id == id)
     if not param_in_db.first():
