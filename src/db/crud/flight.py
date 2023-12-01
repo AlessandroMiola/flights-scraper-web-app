@@ -34,8 +34,22 @@ def get_flight_data_by_id(id: int, db: Session):
     return db.query(Flight).filter(Flight.parameters_id == id)
 
 
+def update_flight_data_by_id(
+    id: int,
+    new_flight_data: list[FlightShow],
+    db: Session
+):
+    updated_flights = []
+    for new_flight in new_flight_data:
+        updated_flight = Flight(parameters_id=id, **new_flight.model_dump())
+        db.add(updated_flight)
+        updated_flights.append(updated_flight)
+    db.commit()
+    return updated_flights
+
+
 def delete_flight_data_by_id(id: int, db: Session):
-    flights_in_db = db.query(Flight).filter(Flight.parameters_id == id)
+    flights_in_db = get_flight_data_by_id(id=id, db=db).all()
     if not flights_in_db:
         return {"error": f"Could not find flights having parameters_id {id}."}
     flights_in_db.delete()
