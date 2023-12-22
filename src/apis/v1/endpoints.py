@@ -73,23 +73,15 @@ def update_params_and_call_scraper(
         )
         for data in scraped_flight_data:
             flight_data_out = FlightShow(**data)
-            _ = post_flight_data(
-                    params=parameters, flight_data=flight_data_out, db=db
-                )
-        return responses.RedirectResponse(
-            url="/",
-            status_code=status.HTTP_302_FOUND
-        )
+            _ = post_flight_data(params=parameters, flight_data=flight_data_out, db=db)
+        return responses.RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     except ValidationError as e:
         exceptions_list = json.loads(e.json())
         for item in exceptions_list:
             exceptions.append(item.get("loc")[-1] + ": " + item.get("msg"))
         return templates.TemplateResponse(
             name="flight-details/home.html",
-            context={
-                "request": request,
-                "exceptions": exceptions
-            }
+            context={"request": request, "exceptions": exceptions}
         )
 
 
@@ -108,11 +100,7 @@ def get_all_flights_details(db: Session = Depends(get_db)):
     return all_flights_data
 
 
-@router.get(
-    "/flight/{id}",
-    response_model=list[FlightShow],
-    status_code=status.HTTP_200_OK
-)
+@router.get("/flight/{id}", response_model=list[FlightShow], status_code=status.HTTP_200_OK)
 def get_flight_details(id: int, db: Session = Depends(get_db)):
     flight_data = get_flight_data_by_id(id=id, db=db)
     if not flight_data:
@@ -135,19 +123,13 @@ def update_flight_details(id: int, db: Session = Depends(get_db)):
         arrival_location_comeback=existing_flight_params.arrival_location_comeback,
         departure_date_comeback=existing_flight_params.departure_date_comeback
     )
-    updated_flight_data = TypeAdapter(list[FlightShow]).validate_python(
-        scraped_flight_data
-    )
+    updated_flight_data = TypeAdapter(list[FlightShow]).validate_python(scraped_flight_data)
     if not updated_flight_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No flight data available and updatable for id {id}."
         )
-    return update_flight_data_by_id(
-        id=id,
-        new_flight_data=updated_flight_data,
-        db=db
-    )
+    return update_flight_data_by_id(id=id, new_flight_data=updated_flight_data, db=db)
 
 
 @router.delete("/cleanup/{id}", status_code=status.HTTP_204_NO_CONTENT)

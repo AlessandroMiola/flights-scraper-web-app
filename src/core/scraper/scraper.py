@@ -30,9 +30,7 @@ class EdreamsScraper:
         self._options = Options()
         self._options.add_argument("--headless")
         self._options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-        self._options.add_experimental_option(
-            "excludeSwitches", ["enable-logging"]
-        )
+        self._options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self._options.add_experimental_option("detach", True)
         self._url = "https://www.edreams.it/"
         self._driver = webdriver.Chrome(options=self._options)
@@ -132,9 +130,7 @@ class EdreamsScraper:
         day.click()
 
     def _click_submit_button(self):
-        submit_button = self._driver.find_element(
-            By.XPATH, self._xpath_submit_button
-        )
+        submit_button = self._driver.find_element(By.XPATH, self._xpath_submit_button)
         submit_button.click()
 
     def _fill_trip_details(
@@ -145,12 +141,8 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         pos_index = 0 if is_outbound else 1
-        self._fill_location_box(
-            self._xpath_dep_location_boxes, departure_location, pos_index
-        )
-        self._fill_location_box(
-            self._xpath_arr_location_boxes, arrival_location, pos_index
-        )
+        self._fill_location_box(self._xpath_dep_location_boxes, departure_location, pos_index)
+        self._fill_location_box(self._xpath_arr_location_boxes, arrival_location, pos_index)
         system_time.sleep(3)
         month_to_select = departure_date.strftime('%B').capitalize()
         day_to_select = departure_date.day
@@ -194,20 +186,14 @@ class EdreamsScraper:
             load_add_elements_button.click()
 
     def _scroll_to_load_all_flight_cards(self):
-        prev_page_height = self._driver.execute_script(
-            "return document.body.scrollHeight"
-        )
+        prev_page_height = self._driver.execute_script("return document.body.scrollHeight")
         while True:
             self._driver.execute_script("window.scrollBy(0, 600)")
             system_time.sleep(1)
-            curr_page_height = self._driver.execute_script(
-                "return document.body.scrollHeight"
-            )
+            curr_page_height = self._driver.execute_script("return document.body.scrollHeight")
             if curr_page_height == prev_page_height:
                 self._click_load_additional_cards_button()
-                curr_page_height = self._driver.execute_script(
-                    "return document.body.scrollHeight"
-                )
+                curr_page_height = self._driver.execute_script("return document.body.scrollHeight")
                 if curr_page_height == prev_page_height:
                     break
             prev_page_height = curr_page_height
@@ -220,14 +206,10 @@ class EdreamsScraper:
         index: int
     ):
         days_to_add = 0
-        delta_days = web_element.find_elements(
-            By.XPATH, self._xpath_flight_times_next_days
-        )
+        delta_days = web_element.find_elements(By.XPATH, self._xpath_flight_times_next_days)
         days_to_add += int(delta_days[index].text[-1]) if delta_days[index].text != "" else 0
         arrival_date = add_n_days_to_input_dates(departure_date, days_to_add)
-        return combine_input_dates_and_scraped_timestr(
-            arrival_date, arrival_time
-        )
+        return combine_input_dates_and_scraped_timestr(arrival_date, arrival_time)
 
     def _localize_outbound_or_return_trip_box(
         self,
@@ -247,9 +229,7 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         try:
-            single_trip_box = self._localize_outbound_or_return_trip_box(
-                web_element, is_outbound
-            )
+            single_trip_box = self._localize_outbound_or_return_trip_box(web_element, is_outbound)
         except NoSuchElementException:
             unchecked_luggage_ow_trip = web_element.find_elements(
                 By.XPATH, self._xpath_unchecked_luggage
@@ -280,9 +260,7 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         pos_index = 0 if is_outbound else 1
-        flight_times = web_element.find_elements(
-            By.XPATH, self._xpath_flight_times
-        )
+        flight_times = web_element.find_elements(By.XPATH, self._xpath_flight_times)
         departure_dates = combine_input_dates_and_scraped_timestr(
             date, flight_times[pos_index * 2].text
         )
@@ -297,9 +275,7 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         pos_index = 0 if is_outbound else 1
-        locations = web_element.find_elements(
-            By.XPATH, self._xpath_flight_locations
-        )
+        locations = web_element.find_elements(By.XPATH, self._xpath_flight_locations)
         departure_locations = locations[pos_index * 2].text
         arrival_locations = locations[pos_index * 2 + 1].text
         return departure_locations, arrival_locations
@@ -319,9 +295,7 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         pos_index = 0 if is_outbound else 1
-        flight_lengths = web_element.find_elements(
-            By.XPATH, self._xpath_flight_lengths
-        )
+        flight_lengths = web_element.find_elements(By.XPATH, self._xpath_flight_lengths)
         return flight_lengths[pos_index].text
 
     def _extract_flight_type_details(
@@ -330,9 +304,7 @@ class EdreamsScraper:
         is_outbound: bool
     ):
         pos_index = 0 if is_outbound else 1
-        flight_types = web_element.find_elements(
-            By.XPATH, self._xpath_flight_types
-        )
+        flight_types = web_element.find_elements(By.XPATH, self._xpath_flight_types)
         return flight_types[pos_index].text
 
     def _extract_luggage_type_details(
@@ -353,9 +325,7 @@ class EdreamsScraper:
         self,
         web_element: WebElement
     ):
-        currencies = web_element.find_elements(
-            By.XPATH, self._xpath_currencies
-        )
+        currencies = web_element.find_elements(By.XPATH, self._xpath_currencies)
         return currencies[0].text[-1]
 
     def _extract_single_trip_details(
@@ -371,13 +341,9 @@ class EdreamsScraper:
             web_element, is_outbound
         )
         airline = self._extract_airline_details(web_element, is_outbound)
-        trip_length = self._extract_flight_length_details(
-            web_element, is_outbound
-        )
+        trip_length = self._extract_flight_length_details(web_element, is_outbound)
         trip_type = self._extract_flight_type_details(web_element, is_outbound)
-        luggage_type = self._extract_luggage_type_details(
-            web_element, is_outbound
-        )
+        luggage_type = self._extract_luggage_type_details(web_element, is_outbound)
         price = self._extract_price_details(web_element)
         currency = self._extract_currency_details(web_element)
         trip_data = {
