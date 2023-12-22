@@ -19,10 +19,7 @@ def configure_dash_app(app, dash_app):
     app.mount("/price-history", WSGIMiddleware(dash_app.server))
 
 
-app = FastAPI(
-    title=settings.PROJECT_TITLE,
-    version=settings.PROJECT_VERSION,
-)
+app = FastAPI(title=settings.PROJECT_TITLE, version=settings.PROJECT_VERSION)
 include_router(app)
 configure_staticfiles(app)
 configure_dash_app(app, dash_app)

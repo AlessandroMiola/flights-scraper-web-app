@@ -23,48 +23,20 @@ class Flight(Base, TableNameMixin):
     is_two_way_trip: Mapped[bool] = mapped_column(Boolean, nullable=False)
     departure_location: Mapped[str] = mapped_column(String, nullable=False)
     arrival_location: Mapped[str] = mapped_column(String, nullable=False)
-    departure_location_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True,
-    )
-    arrival_location_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True,
-    )
+    departure_location_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    arrival_location_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     departure_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     arrival_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-    departure_date_comeback: Mapped[Optional[datetime]] = mapped_column(
-        DateTime,
-        nullable=True,
-    )
-    arrival_date_comeback: Mapped[Optional[datetime]] = mapped_column(
-        DateTime,
-        nullable=True,
-    )
+    departure_date_comeback: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    arrival_date_comeback: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     airline: Mapped[str] = mapped_column(String, nullable=False)
-    airline_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True
-    )
+    airline_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     flight_length: Mapped[str] = mapped_column(String, nullable=False)
-    flight_length_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True
-    )
+    flight_length_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     trip_type: Mapped[str] = mapped_column(String, nullable=False)
-    trip_type_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True
-    )
+    trip_type_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     price: Mapped[float] = mapped_column(Float, nullable=False)
     currency: Mapped[str] = mapped_column(String, nullable=False)
     luggage_type: Mapped[str] = mapped_column(String, nullable=False)
-    luggage_type_comeback: Mapped[Optional[str]] = mapped_column(
-        String,
-        nullable=True
-    )
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        nullable=False,
-        default=datetime.utcnow
-    )
+    luggage_type_comeback: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
