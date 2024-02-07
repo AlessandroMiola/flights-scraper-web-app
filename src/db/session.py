@@ -1,10 +1,9 @@
-from typing import Generator
+from collections.abc import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.core.config import settings
-
 
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 engine = create_engine(url=SQLALCHEMY_DATABASE_URL, echo=True)
