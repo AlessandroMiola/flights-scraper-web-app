@@ -14,9 +14,5 @@ class Parameter(Base, TableNameMixin):
     departure_location_comeback: Mapped[str | None] = mapped_column(String, nullable=True)
     arrival_location_comeback: Mapped[str | None] = mapped_column(String, nullable=True)
     departure_date: Mapped[date] = mapped_column(Date, nullable=False)
-    departure_date_comeback: Mapped[date | None] = mapped_column(Date,nullable=True)
-    flights = relationship(
-        "Flight",
-        back_populates="parameters",
-        cascade="all, delete-orphan"
-    )
+    departure_date_comeback: Mapped[date | None] = mapped_column(Date, nullable=True)
+    flights = relationship("Flight", back_populates="parameters", cascade="all, delete-orphan")

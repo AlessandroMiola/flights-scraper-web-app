@@ -7,11 +7,7 @@ from src.db.models.parameter import Parameter
 from src.entities.flight import FlightShow
 
 
-def post_flight_data(
-    params: Parameter,
-    flight_data: FlightShow,
-    db: Session
-):
+def post_flight_data(params: Parameter, flight_data: FlightShow, db: Session):
     flight = Flight(parameters=params, **flight_data.model_dump())
     db.add(flight)
     db.commit()
@@ -23,9 +19,8 @@ def get_all_flights_data(db: Session):
     all_flights = db.query(Flight).all()
     all_flights.sort(key=lambda flight: flight.parameters_id)
     return {
-        params_id: list(group) for params_id, group in groupby(
-            all_flights, key=lambda flight: flight.parameters_id
-        )
+        params_id: list(group)
+        for params_id, group in groupby(all_flights, key=lambda flight: flight.parameters_id)
     }
 
 
@@ -33,11 +28,7 @@ def get_flight_data_by_id(params_id: int, db: Session):
     return db.query(Flight).filter(Flight.parameters_id == params_id)
 
 
-def update_flight_data_by_id(
-    params_id: int,
-    new_flight_data: list[FlightShow],
-    db: Session
-):
+def update_flight_data_by_id(params_id: int, new_flight_data: list[FlightShow], db: Session):
     updated_flights = []
     for new_flight in new_flight_data:
         updated_flight = Flight(parameters_id=params_id, **new_flight.model_dump())

@@ -8,9 +8,7 @@ from src.db.base_class import Base, TableNameMixin
 
 class Flight(Base, TableNameMixin):
     parameters_id: Mapped[int] = mapped_column(
-        Integer,
-        ForeignKey("parameters.id", ondelete="CASCADE"),
-        nullable=False
+        Integer, ForeignKey("parameters.id", ondelete="CASCADE"), nullable=False
     )
     parameters = relationship(
         "Parameter",
