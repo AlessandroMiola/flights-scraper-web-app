@@ -12,14 +12,14 @@ def create_params(flight: FlightCreate, db: Session):
     return params
 
 
-def get_params_by_id(id: int, db: Session):
-    return db.query(Parameter).filter(Parameter.id == id)
+def get_params_by_id(params_id: int, db: Session):
+    return db.query(Parameter).filter(Parameter.id == params_id)
 
 
-def delete_params_by_id(id: int, db: Session):
-    param_in_db = db.query(Parameter).filter(Parameter.id == id)
+def delete_params_by_id(params_id: int, db: Session):
+    param_in_db = db.query(Parameter).filter(Parameter.id == params_id)
     if not param_in_db.first():
-        return {"error": f"Could not find parameters with id {id}."}
+        return {"error": f"Could not find parameters with id {params_id}."}
     param_in_db.delete()
     db.commit()
-    return {"msg": f"Deleted parameters with id {id}."}
+    return {"msg": f"Deleted parameters with id {params_id}."}

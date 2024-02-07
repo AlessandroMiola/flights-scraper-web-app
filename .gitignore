@@ -4,3 +4,4 @@ __pycache__
 .vscode/
 db-data/
 geckodriver.log
+.ruff_cache

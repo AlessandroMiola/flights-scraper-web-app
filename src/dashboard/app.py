@@ -1,12 +1,11 @@
-from dash import html, Dash, dcc
-from dash.dependencies import Input, Output
 import plotly.graph_objects as go
+from dash import Dash, dcc, html
+from dash.dependencies import Input, Output
 from sqlalchemy.orm import Session
 
 from src.db.models.flight import Flight
 from src.db.models.parameter import Parameter
 from src.db.session import engine
-
 
 app = Dash(__name__, requests_pathname_prefix='/price-history/')
 app.layout = html.Div([
@@ -82,7 +81,7 @@ def update_plot(selected_option: int):
     )
     figure.update_layout(
         title="Price History",
-        xaxis=dict(title="Sampling date"),
-        yaxis=dict(title="Price (Euro)")
+        xaxis={"title": "Sampling date"},
+        yaxis={"title": "Price (Euro)"},
     )
     return figure

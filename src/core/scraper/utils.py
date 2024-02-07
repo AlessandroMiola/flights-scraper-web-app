@@ -1,6 +1,5 @@
-from datetime import (
-    date, datetime, time as datetime_time, timedelta
-)
+from datetime import date, datetime, timedelta
+from datetime import time as datetime_time
 
 
 def add_n_days_to_input_dates(date: date, n_days: int):

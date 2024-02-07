@@ -1,29 +1,31 @@
 import locale
 import re
 import time as system_time
-
 from datetime import date
+
 from selenium import webdriver
 from selenium.common.exceptions import (
-    ElementNotVisibleException, NoSuchElementException, TimeoutException
+    ElementNotVisibleException,
+    NoSuchElementException,
+    TimeoutException,
 )
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from typing import Optional
 
 from src.core.scraper.utils import (
-    add_n_days_to_input_dates, combine_input_dates_and_scraped_timestr
+    add_n_days_to_input_dates,
+    combine_input_dates_and_scraped_timestr,
 )
 
 
 class EdreamsScraper:
 
     @classmethod
-    def _set_locale(self, locale_str: str = 'it_IT'):
+    def _set_locale(cls, locale_str: str = 'it_IT'):
         locale.setlocale(locale.LC_ALL, locale_str)
 
     def __init__(self):
@@ -155,9 +157,9 @@ class EdreamsScraper:
         departure_location: str,
         arrival_location: str,
         departure_date: date,
-        departure_location_comeback: Optional[str] = None,
-        arrival_location_comeback: Optional[str] = None,
-        departure_date_comeback: Optional[date] = None
+        departure_location_comeback: str | None = None,
+        arrival_location_comeback: str | None = None,
+        departure_date_comeback: date | None = None
     ):
         self._setup_cookies()
         self._click_trip_type_radio_button(is_two_way_trip)
@@ -221,8 +223,7 @@ class EdreamsScraper:
         xpath_return_trip_box = self._xpath_line_splitting_subboxes + "/following-sibling::div[1]"
         if is_outbound:
             return web_element.find_element(By.XPATH, xpath_outbound_trip_box)
-        else:
-            return web_element.find_element(By.XPATH, xpath_return_trip_box)
+        return web_element.find_element(By.XPATH, xpath_return_trip_box)
 
     def _determine_luggage_type(
         self,
@@ -240,8 +241,7 @@ class EdreamsScraper:
             )
             if unchecked_luggage_ow_trip != []:
                 return unchecked_luggage_ow_trip[0].text
-            else:
-                return checked_luggage_ow_trip[0].text
+            return checked_luggage_ow_trip[0].text
         else:
             unchecked_luggage_tw_trip = single_trip_box.find_elements(
                 By.XPATH, self._xpath_unchecked_luggage
@@ -251,8 +251,7 @@ class EdreamsScraper:
             )
             if unchecked_luggage_tw_trip != []:
                 return unchecked_luggage_tw_trip[0].text
-            else:
-                return checked_luggage_tw_trip[0].text
+            return checked_luggage_tw_trip[0].text
 
     def _extract_date_details(
         self,
@@ -347,7 +346,7 @@ class EdreamsScraper:
         luggage_type = self._extract_luggage_type_details(web_element, is_outbound)
         price = self._extract_price_details(web_element)
         currency = self._extract_currency_details(web_element)
-        trip_data = {
+        return {
             "departure_date" if is_outbound else "departure_date_comeback": departure_date,
             "arrival_date" if is_outbound else "arrival_date_comeback": arrival_date,
             "departure_location" if is_outbound else "departure_location_comeback": departure_location,
@@ -359,13 +358,12 @@ class EdreamsScraper:
             "price": price,
             "currency": currency
         }
-        return trip_data
 
     def scrape_flight_data(
         self,
         is_two_way_trip: bool,
         departure_date: date,
-        departure_date_comeback: Optional[date] = None
+        departure_date_comeback: date | None = None
     ):
         self._scroll_to_load_all_flight_cards()
         flight_cards = WebDriverWait(self._driver, 10).until(
@@ -373,7 +371,7 @@ class EdreamsScraper:
         )
         flight_data_list = []
         for card in flight_cards:
-            flight_data = dict()
+            flight_data = {}
             flight_data["is_two_way_trip"] = is_two_way_trip
             flight_data.update(self._extract_single_trip_details(
                 card, departure_date, is_outbound=True)
@@ -394,9 +392,9 @@ def scrape_data(
     departure_location: str,
     arrival_location: str,
     departure_date: date,
-    departure_location_comeback: Optional[str] = None,
-    arrival_location_comeback: Optional[str] = None,
-    departure_date_comeback: Optional[date] = None
+    departure_location_comeback: str | None = None,
+    arrival_location_comeback: str | None = None,
+    departure_date_comeback: date | None = None
 ):
     scraper = EdreamsScraper()
     scraper.search_flights(

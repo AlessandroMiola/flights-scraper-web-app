@@ -1,6 +1,6 @@
-from typing import Any, Optional
-
 from datetime import date, datetime
+from typing import Any
+
 from pydantic import BaseModel, model_validator
 
 
@@ -8,10 +8,10 @@ class FlightBase(BaseModel):
     is_two_way_trip: bool
     departure_location: str
     arrival_location: str
-    departure_location_comeback: Optional[str] = None
-    arrival_location_comeback: Optional[str] = None
+    departure_location_comeback: str | None = None
+    arrival_location_comeback: str | None = None
     departure_date: datetime
-    departure_date_comeback: Optional[datetime] = None
+    departure_date_comeback: datetime | None = None
 
 
 class FlightCreate(FlightBase):
@@ -48,17 +48,17 @@ class FlightCreate(FlightBase):
 
 class FlightShow(FlightBase):
     arrival_date: datetime
-    arrival_date_comeback: Optional[datetime] = None
+    arrival_date_comeback: datetime | None = None
     airline: str
-    airline_comeback: Optional[str] = None
+    airline_comeback: str | None = None
     flight_length: str
-    flight_length_comeback: Optional[str] = None
+    flight_length_comeback: str | None = None
     trip_type: str
-    trip_type_comeback: Optional[str] = None
+    trip_type_comeback: str | None = None
     price: float
     currency: str
     luggage_type: str
-    luggage_type_comeback: Optional[str] = None
+    luggage_type_comeback: str | None = None
 
     @model_validator(mode="before")
     @classmethod
