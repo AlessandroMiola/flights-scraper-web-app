@@ -31,14 +31,14 @@
             </div>
 
             <div class="row mt-3 mb-3">
-                <div>    
+                <div>
                     <input required type="text" placeholder="from" name="departure_location">
                     <input required type="text" placeholder="to" name="arrival_location">
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
-                <div>  
+                <div>
                     <input required class="date-inputs" type="date" name="departure_date" id="dep-date"/>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             const form1 = document.querySelector("input[name='departure_location_comeback']");
             const form2 = document.querySelector("input[name='arrival_location_comeback']");
             const form3 = document.querySelector("input[name='departure_date_comeback']");
-            
+
             document.querySelector('#twoway-trip').addEventListener('change', (event) => {
                 if (event.target.checked){
                     form1.classList.remove("hidden");
@@ -130,5 +130,5 @@
         {% endblock %}
 
     </div>
-    
+
 {% endblock %}

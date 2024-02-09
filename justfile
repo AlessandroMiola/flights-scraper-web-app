@@ -8,9 +8,15 @@ install:
   @echo "🚀 Installing dependencies"
   @poetry install --with dev
 
+install-pre-commit:
+  @echo "🚀 Setting up the hooks"
+  @poetry run pre-commit install
+
 check-project:
   @echo "🚀 Checking consistency between poetry.lock and pyproject.toml"
   @poetry check --lock
+  @echo "🚀 Running the hooks against all files"
+  @poetry run pre-commit run --all-files
 
 ruff:
   @echo "🚀 Linting the project with Ruff"
