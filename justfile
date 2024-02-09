@@ -1,5 +1,5 @@
 # Use PowerShell instead of sh
-set shell := ["powershell.exe", "-c"]
+# set shell := ["powershell.exe", "-c"]
 
 help:
   @just --list
